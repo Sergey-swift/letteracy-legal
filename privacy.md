@@ -99,4 +99,4 @@ We may update this Privacy Policy from time to time. We will indicate the date o
 
 ## 11. Contact Us
 
-If you have any questions or concerns about this Privacy Policy, your personal data, or wish to exercise your data rights, please contact us at madeforwebsiteneeds@gmail.com .
+If you have any questions or concerns about this Privacy Policy, your personal data, or wish to exercise your data rights, please contact us at letteracy.app@gmail.com .
