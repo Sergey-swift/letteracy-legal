@@ -93,4 +93,4 @@ These Terms shall be governed by and construed in accordance with applicable law
 
 ## 16. Contact
 
-If you have questions about these Terms, please contact us at madeforwebsiteneeds@gmail.com .
+If you have questions about these Terms, please contact us at letteracy.app@gmail.com .
