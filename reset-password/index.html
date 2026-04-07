@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letteracy — Reset Password</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #F2EBE3;
+            color: #433422;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .container {
+            background: #FDFBF7;
+            border-radius: 20px;
+            padding: 40px 32px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 4px 24px rgba(67, 52, 34, 0.08);
+            border: 1px solid rgba(67, 52, 34, 0.05);
+        }
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: rgba(67, 52, 34, 0.5);
+            margin-bottom: 32px;
+            font-style: italic;
+        }
+        label {
+            display: block;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(67, 52, 34, 0.4);
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(67, 52, 34, 0.05);
+            background: #F2EBE3;
+            font-size: 16px;
+            font-family: Georgia, serif;
+            color: #433422;
+            outline: none;
+            margin-bottom: 16px;
+        }
+        input:focus { border-color: #C18C5D; }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #433422;
+            color: #F2EBE3;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: Georgia, serif;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .message {
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .success { background: rgba(193, 140, 93, 0.1); color: #433422; }
+        .error { background: rgba(220, 50, 50, 0.1); color: #a03030; }
+        .hidden { display: none; }
+        .requirements {
+            font-size: 11px;
+            color: rgba(67, 52, 34, 0.4);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .loading {
+            text-align: center;
+            color: rgba(67, 52, 34, 0.5);
+            font-style: italic;
+            font-size: 14px;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Letteracy</div>
+
+        <div id="loading-section">
+            <div class="loading">Verifying your reset link...</div>
+        </div>
+
+        <div id="form-section" class="hidden">
+            <div class="subtitle">Set your new password</div>
+
+            <label>New Password</label>
+            <input type="password" id="password" placeholder="Enter new password" minlength="6">
+
+            <label>Confirm Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm new password" minlength="6">
+
+            <p class="requirements">Password must be at least 6 characters.</p>
+
+            <button class="btn" id="submit-btn" onclick="handleReset()">Update Password</button>
+
+            <div id="form-error" class="message error hidden" style="margin-top: 16px;"></div>
+        </div>
+
+        <div id="success-section" class="hidden">
+            <div class="message success">
+                Your password has been updated successfully.<br><br>
+                You can now return to the <strong>Letteracy</strong> app and sign in with your new password.
+            </div>
+        </div>
+
+        <div id="expired-section" class="hidden">
+            <div class="message error">
+                This password reset link is invalid or has expired.<br><br>
+                Please go back to the Letteracy app and request a new reset email.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        var SUPABASE_URL = 'https://mqwzvbzwvuncfhrvepaa.supabase.co';
+        var SUPABASE_ANON_KEY = 'sb_publishable_Mg4NmMgjRJuRkwQGaRnNPg_6A2hTyIQ';
+
+        var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var sessionReady = false;
+
+        client.auth.onAuthStateChange(function(event, session) {
+            if (event === 'PASSWORD_RECOVERY') {
+                sessionReady = true;
+                document.getElementById('loading-section').classList.add('hidden');
+                document.getElementById('form-section').classList.remove('hidden');
+            }
+        });
+
+        // Fallback: if no PASSWORD_RECOVERY event fires within 5 seconds, show expired message
+        setTimeout(function() {
+            if (!sessionReady) {
+                document.getElementById('loading-section').classList.add('hidden');
+                document.getElementById('expired-section').classList.remove('hidden');
+            }
+        }, 5000);
+
+        async function handleReset() {
+            var password = document.getElementById('password').value;
+            var confirm = document.getElementById('confirm-password').value;
+            var btn = document.getElementById('submit-btn');
+            var formError = document.getElementById('form-error');
+
+            formError.classList.add('hidden');
+
+            if (!password || password.length < 6) {
+                formError.textContent = 'Password must be at least 6 characters.';
+                formError.classList.remove('hidden');
+                return;
+            }
+
+            if (password !== confirm) {
+                formError.textContent = 'Passwords do not match.';
+                formError.classList.remove('hidden');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Updating...';
+
+            try {
+                var result = await client.auth.updateUser({ password: password });
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+                document.getElementById('form-section').classList.add('hidden');
+                document.getElementById('success-section').classList.remove('hidden');
+            } catch (err) {
+                formError.textContent = err.message || 'Something went wrong. Please request a new reset email from the app.';
+                formError.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Update Password';
+            }
+        }
+    </script>
+</body>
+</html>
