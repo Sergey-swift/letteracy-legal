@@ -1,6 +1,6 @@
 # Letteracy — Terms of Service
 
-**Last updated: February 24, 2026**
+**Last updated: September 1, 2026**
 
 Please read these Terms of Service ("Terms") carefully before using the Letteracy mobile application ("the App"). By creating an account or using the App, you agree to be bound by these Terms.
 
@@ -47,7 +47,7 @@ Violation of these guidelines may result in content removal, account suspension,
 
 ## 6. Content Moderation
 
-Letteracy provides tools for users to report content and block other users. We reserve the right to review reported content and take appropriate action, including removal of content, issuing warnings, or suspension or termination of accounts. We are not obligated to monitor all content but may do so at our discretion.
+Letteracy provides tools for users to report content and block other users. In addition, the App applies automated filtering that prevents the posting of slurs and hateful language across posts, comments, club messages, and profile fields. We reserve the right to review reported content and take appropriate action, including removal of content, issuing warnings, or suspension or termination of accounts. We are not obligated to monitor all content but may do so at our discretion.
 
 ## 7. Third-Party Services
 
